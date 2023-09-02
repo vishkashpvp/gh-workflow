@@ -20,6 +20,7 @@ func init() {
 
 func main() {
 	r := gin.Default()
+	addr := networkAddress("8080")
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "welcome to github workflow")
@@ -32,5 +33,12 @@ func main() {
 		})
 	})
 
-	r.Run("0.0.0.0:8080")
+	r.Run(addr)
+}
+
+func networkAddress(port string) string {
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		return "0.0.0.0:" + envPort
+	}
+	return "0.0.0.0:" + port
 }
